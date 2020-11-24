@@ -1,11 +1,6 @@
 
 package it.mcprisa.autonoleggio.sicurezza;
 
-/**
- *
- * È questa la struttura che avrà il form dell'autenticazione
- * Parte del PASSAGGIO 1
- */
 public class UsernameAndPasswordAuthenticationRequest {
     //nel nostro caso l'autenticazione avverrà tramite user e passsword
     private String username;

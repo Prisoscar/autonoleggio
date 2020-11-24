@@ -26,13 +26,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Autowired
     private PasswordEncoder passw;
 
-    /* Trigger when we issue POST request to /login
-    We also need to pass in {"username":"dan", "password":"dan123"} in the request body
+    /* si trigghera con richieste POST a /login
+    nel body della richiesta dovremmo altresì inserire {"username":"user", "password":"passw"}
      */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
-        // Grab credentials and map them to login viewmodel
+        // prende le credenziali e le mappa
         UsernameAndPasswordAuthenticationRequest credentials = null;
         try {
             credentials = new ObjectMapper().readValue(request.getInputStream(), UsernameAndPasswordAuthenticationRequest.class);
@@ -40,13 +40,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             e.printStackTrace();
         }
 
-        // Create login token
+        // Crea il token del login
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 credentials.getUsername(),
                 credentials.getPassword(),
                 new ArrayList<>());
 
-        // Authenticate user
+        // Autentica l'utente
         Authentication auth = authenticationManager.authenticate(authenticationToken);
 
         return auth;
@@ -57,7 +57,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // prendo i dati utente dopo l'autenticazione
         ApplicationUser applicationUser = (ApplicationUser) authResult.getPrincipal();
 
-        // Create JWT Token
+        // Crea il Token JWT
           String token = JwtUtil.creaToken(applicationUser);
           
         // aggiungo il token al header dell'http response

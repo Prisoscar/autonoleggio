@@ -27,6 +27,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     
     @Override
+    //l'autenticazione avverrà tramite database
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
@@ -50,7 +51,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 // configuro le regole di accesso alle api
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers("/user/*").hasRole("CLIENTE")
-                .antMatchers("/admin/*").hasRole("ADMIN")
+                .antMatchers("/admin/*").hasRole("AMMINISTRATORE")
                 .antMatchers("/impiegato/*").hasRole("IMPIEGATO")
                 .antMatchers("/public/*").permitAll()
                 .anyRequest().authenticated();

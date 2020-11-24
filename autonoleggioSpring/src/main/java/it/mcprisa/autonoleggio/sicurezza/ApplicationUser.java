@@ -22,7 +22,7 @@ public class ApplicationUser implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        // Extract list of roles (ROLE_name)
+        // Estrae la lista delle authorities, in questo caso solo i ruoli (ROLE_NOME_RUOLO)
             GrantedAuthority authority = new SimpleGrantedAuthority(this.utente.getRuoloUtente().toString());
             authorities.add(authority);
 
@@ -40,16 +40,19 @@ public class ApplicationUser implements UserDetails {
     }
 
     @Override
+    //non implementato
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    //non implementato
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    //non implementato
     public boolean isCredentialsNonExpired() {
         return true;
     }

@@ -16,6 +16,7 @@ public class ApplicationUserService implements UserDetailsService {
     private RepUtente repUtente;
 
     @Override
+    //cerca l'utente dal database
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Utente utente = repUtente.findByUsername(username);
        /* if (utente == null){
