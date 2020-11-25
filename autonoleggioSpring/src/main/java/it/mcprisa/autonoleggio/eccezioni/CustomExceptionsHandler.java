@@ -1,10 +1,13 @@
 package it.mcprisa.autonoleggio.eccezioni;
 
 import it.mcprisa.autonoleggio.dto.ErrorePersonalizzatoDto;
+import java.nio.file.AccessDeniedException;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * Questa classe intercetta le eccezioni lanciate dal controller per restituire
@@ -17,6 +20,13 @@ public class CustomExceptionsHandler {
     @ExceptionHandler({CattivaRichiestaException.class})
     public ResponseEntity<ErrorePersonalizzatoDto> handleBadRequestCustomException(CattivaRichiestaException e) {
 
+        AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class).value().getReasonPhrase();
+        if (AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class) != null){
+            //TODO
+        }else{
+            throw e;
+        }
+                
         ErrorePersonalizzatoDto errorePersonalizzatoDto = new ErrorePersonalizzatoDto(
                 HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),
@@ -27,3 +37,4 @@ public class CustomExceptionsHandler {
         return new ResponseEntity<>(errorePersonalizzatoDto, HttpStatus.BAD_REQUEST);
     }
 }
+
