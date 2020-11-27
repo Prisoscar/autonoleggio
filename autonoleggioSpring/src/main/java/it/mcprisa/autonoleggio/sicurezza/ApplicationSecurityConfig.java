@@ -38,6 +38,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         //Questo filtro scatterà ogni volta che viene triggherato il deadend /login
         JwtAuthenticationFilter customFilter = new JwtAuthenticationFilter(authenticationManager());
         customFilter.setFilterProcessesUrl("/login");
+        customFilter.setPostOnly(true);
 
         http
                 // rimuovo il csfr e lo stato nella sessione poerché non mi servono
@@ -49,7 +50,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), this.repUtente))
                 .authorizeRequests()
                 // configuro le regole di accesso alle api
-                .antMatchers(HttpMethod.POST, "/login").permitAll()
+              //  .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers("/user/*").hasRole("CLIENTE")
                 .antMatchers("/admin/*").hasRole("AMMINISTRATORE")
                 .antMatchers("/impiegato/*").hasRole("IMPIEGATO")

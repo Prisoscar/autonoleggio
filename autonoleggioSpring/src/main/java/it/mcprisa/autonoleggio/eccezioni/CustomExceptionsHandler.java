@@ -17,24 +17,18 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class CustomExceptionsHandler {
 
     //Questo è il metodo che gestisce le eccezioni di bad request (400)
-    @ExceptionHandler({CattivaRichiestaException.class})
-    public ResponseEntity<ErrorePersonalizzatoDto> handleBadRequestCustomException(CattivaRichiestaException e) {
-
-        AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class).value().getReasonPhrase();
-        if (AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class) != null){
-            //TODO
+    @ExceptionHandler(ModelloEccezionePersonalizzataConHttpStatus.class)
+    public ResponseEntity<ErrorePersonalizzatoDto> handleBadRequestCustomException(ModelloEccezionePersonalizzataConHttpStatus e) {
+        //Istanzio l'oggetto che restituirò nella risposta
+        ErrorePersonalizzatoDto errorePersonalizzatoDto = new ErrorePersonalizzatoDto();
+        if (AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class) != null && AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class).value() != null){
+                errorePersonalizzatoDto.setStatus(AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class).value().value());
+                errorePersonalizzatoDto.setError(AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class).value().getReasonPhrase());
+                errorePersonalizzatoDto.setProblem(e.getMessage());
         }else{
-            throw e;
+                throw e;
         }
-                
-        ErrorePersonalizzatoDto errorePersonalizzatoDto = new ErrorePersonalizzatoDto(
-                HttpStatus.BAD_REQUEST.value(),
-                HttpStatus.BAD_REQUEST.getReasonPhrase(),
-                e.getMessage()
-        );
-        //istanzio il CustomErrorDto che verrà inserito nel JSON di risposta
-
-        return new ResponseEntity<>(errorePersonalizzatoDto, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorePersonalizzatoDto, AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class).value());
     }
 }
-
+ 

@@ -3,6 +3,7 @@ package it.mcprisa.autonoleggio.sicurezza;
 import com.auth0.jwt.JWT;
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 import java.util.Date;
+import org.springframework.http.HttpStatus;
 
 /**
  * Qui ci metto gli attributi del token e i metodi per la gestione del token
@@ -13,6 +14,15 @@ public class JwtUtil {
     public static final int EXPIRATION_TIME = 43_200_000; // 12 ore
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String HEADER_STRING = "Authorization";
+    public static HttpStatus httpStatus;
+
+    public static HttpStatus getHttpStatus() {
+        return httpStatus;
+    }
+
+    public static void setHttpStatus(HttpStatus httpStatus) {
+        JwtUtil.httpStatus = httpStatus;
+    }
     
     //Questo metodo crea il token a partire da un applicationUser (il quale contiene semplicemente un utente)
     public static String creaToken (ApplicationUser applicationUser) {     
