@@ -1,9 +1,7 @@
 package it.mcprisa.autonoleggio.eccezioni;
 
 import it.mcprisa.autonoleggio.dto.ErrorePersonalizzatoDto;
-import java.nio.file.AccessDeniedException;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,21 +12,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * dei messaggi di errore customizzati
  */
 @ControllerAdvice
-public class CustomExceptionsHandler {
+public class RimaneggiatoreEccezioniPersonalizzate {
 
-    //Questo è il metodo che gestisce le eccezioni di bad request (400)
+    //Questo è il metodo che gestisce le eccezioni personaliizte
     @ExceptionHandler(ModelloEccezionePersonalizzataConHttpStatus.class)
     public ResponseEntity<ErrorePersonalizzatoDto> handleBadRequestCustomException(ModelloEccezionePersonalizzataConHttpStatus e) {
         //Istanzio l'oggetto che restituirò nella risposta
-        ErrorePersonalizzatoDto errorePersonalizzatoDto = new ErrorePersonalizzatoDto();
-        if (AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class) != null && AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class).value() != null){
-                errorePersonalizzatoDto.setStatus(AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class).value().value());
-                errorePersonalizzatoDto.setError(AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class).value().getReasonPhrase());
-                errorePersonalizzatoDto.setProblem(e.getMessage());
-        }else{
-                throw e;
-        }
+        ErrorePersonalizzatoDto errorePersonalizzatoDto = new ErrorePersonalizzatoDto(
+                AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class).value().value(),
+                AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class).value().getReasonPhrase(),
+                e.getMessage()
+        );
         return new ResponseEntity<>(errorePersonalizzatoDto, AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class).value());
     }
 }
- 

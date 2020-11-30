@@ -10,32 +10,38 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  * di errori personalizati
  */
 public class ErrorePersonalizzatoDto {
+
     private String timestamp;
     private String path;
     private int status;
     private String error;
-    private String problem;
+    private String message;
 
     {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/mm/yyyy - hh:mm:ss z");   //il time lo stampo con questo formato
-        
-        this.path = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-                .getRequest().getRequestURI();
-        this.timestamp = ZonedDateTime.now().format(formatter);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mm:ss z");   //il time lo stampo con questo formato
         /*
         il path e il timestamp verranno sempre definiti in questo modo in questa API, dunque
         per evitare la scrittura di codice inutile ogni volta che viene istanziato un oggetto
         di tipo CustomErrorDto istanzio questi 2 attributi direttamente dentro a un inizializer
          */
-    }    
-    
+        this.path = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+                .getRequest().getRequestURI();
+        this.timestamp = ZonedDateTime.now().format(formatter);
+    }
+
     public ErrorePersonalizzatoDto(int status, String error, String problem) {
         this.status = status;
         this.error = error;
-        this.problem = problem;
+        this.message = problem;
     }
 
     public ErrorePersonalizzatoDto() {
+    }
+
+    @Override
+    //Il toString genererà un json
+    public String toString() {
+        return "{" + "\"timestamp\":\"" + timestamp + "\",\"path\":\"" + path + "\",\"status\":" + status + ",\"error\":\"" + error + "\",\"message\":\"" + message + "\"}";
     }
 
     public String getTimestamp() {
@@ -70,11 +76,11 @@ public class ErrorePersonalizzatoDto {
         this.error = error;
     }
 
-    public String getProblem() {
-        return problem;
+    public String getMessage() {
+        return message;
     }
 
-    public void setProblem(String problem) {
-        this.problem = problem;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

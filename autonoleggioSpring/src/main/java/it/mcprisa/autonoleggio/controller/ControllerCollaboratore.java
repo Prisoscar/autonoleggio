@@ -2,7 +2,9 @@ package it.mcprisa.autonoleggio.controller;
 
 import it.mcprisa.autonoleggio.eccezioni.CattivaRichiestaException;
 import javax.annotation.security.RolesAllowed;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -10,9 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class ControllerCollaboratore {
     
     @RolesAllowed("CLIENTE")
-    @RequestMapping("/metodo")
-    public void metodo(){        
+    @RequestMapping("/admin/metodo")
+    public void metodo(){ 
+        System.out.println("\n\n\nheyy");
     }
+    
+    /*@PostMapping
+    @RequestMapping("/login")
+    public void*/
     
     @RequestMapping("/public/eccezionePersonalizzata")
     public void provaLancioErrorePersonalizato(){
@@ -23,5 +30,14 @@ public class ControllerCollaboratore {
     public void provaLancioErroreNonPersonalizato(){
         int i = 2/0;
     }
-    
+    @PostMapping
+    @RequestMapping("/user")
+    public String user (){
+     return "Qui possono accedere solo utenti";   
+    }
+    @PostMapping
+    @RequestMapping(value = "/admin", method = RequestMethod.POST)
+    public String admin (){
+     return "Qui possono accedere solo amministratori";   
+    }
 }

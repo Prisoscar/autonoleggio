@@ -1,5 +1,6 @@
 package it.mcprisa.autonoleggio.sicurezza;
 
+import it.mcprisa.autonoleggio.eccezioni.MetodoNonAmmessoException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,9 +15,11 @@ import java.io.IOException;
 
 import it.mcprisa.autonoleggio.model.Utente;
 import it.mcprisa.autonoleggio.repository.RepUtente;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
-    
+
     private RepUtente userRepository;
 
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager, RepUtente userRepository) {
@@ -26,6 +29,14 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+        //Memorizzo l'URI in un nuovo attributo della request, dato che se qualcosa fallisce spring reindirizza ad "/error" e lancia lo status 403 FORBIDDEN e viene persa la URI iniziale
+        ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).setAttribute(
+                "originalUri",
+                ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+                        .getRequest().getRequestURI(),
+                0
+        );
+
         // Legge il header "Authorization", dove dovrebbe trovarsi il jwt
         String header = request.getHeader(JwtUtil.HEADER_STRING);
 
@@ -45,7 +56,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     private Authentication getUsernamePasswordAuthentication(HttpServletRequest request) {
         String token = request.getHeader(JwtUtil.HEADER_STRING)
-                .replace(JwtUtil.TOKEN_PREFIX,"");
+                .replace(JwtUtil.TOKEN_PREFIX, "");
 
         if (token != null) {
             // analizza e valida il token e restituisce lo username del proprietario
