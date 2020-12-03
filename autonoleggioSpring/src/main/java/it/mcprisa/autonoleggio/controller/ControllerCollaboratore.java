@@ -1,43 +1,40 @@
 package it.mcprisa.autonoleggio.controller;
 
-import it.mcprisa.autonoleggio.eccezioni.CattivaRichiestaException;
-import javax.annotation.security.RolesAllowed;
-import org.springframework.web.bind.annotation.PostMapping;
+import it.mcprisa.autonoleggio.model.Collaboratore;
+import it.mcprisa.autonoleggio.servizi.SrvCollaboratore;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.lang.Nullable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/collaboratore")
+@RequestMapping(value = "/collaboratore", method = RequestMethod.POST)
 public class ControllerCollaboratore {
-    
-    @RolesAllowed("CLIENTE")
-    @RequestMapping("/admin/metodo")
-    public void metodo(){ 
-        System.out.println("\n\n\nheyy");
+
+    @Autowired
+    SrvCollaboratore srvCollaboratore;
+
+    @RequestMapping("/lista")
+    public List<Collaboratore> lista() {
+        return srvCollaboratore.lista();
+    }
+
+    @RequestMapping("/inserisci")
+    public Collaboratore inserisci(@RequestBody Collaboratore collaboratore) {
+        return srvCollaboratore.inserisci(collaboratore);
     }
     
-    /*@PostMapping
-    @RequestMapping("/login")
-    public void*/
-    
-    @RequestMapping("/public/eccezionePersonalizzata")
-    public void provaLancioErrorePersonalizato(){
-        throw new CattivaRichiestaException("l'eccezione ha fatto il suo dovere!");
+    @RequestMapping("/elimina")
+    public void elimina(@RequestBody @Nullable Collaboratore collaboratore, @Nullable String id){
+        srvCollaboratore.elimina(collaboratore, id);
     }
     
-    @RequestMapping("/public/eccezioneStandard")
-    public void provaLancioErroreNonPersonalizato(){
-        int i = 2/0;
-    }
-    @PostMapping
-    @RequestMapping("/user")
-    public String user (){
-     return "Qui possono accedere solo utenti";   
-    }
-    @PostMapping
-    @RequestMapping(value = "/admin", method = RequestMethod.POST)
-    public String admin (){
-     return "Qui possono accedere solo amministratori";   
+    @RequestMapping("/modifica")
+    public Collaboratore modifica(@RequestBody Collaboratore collaboratore){
+        return srvCollaboratore.modifica(collaboratore);
     }
 }
