@@ -1,3 +1,5 @@
 # autonoleggio
-Un progetto derivato dal primo progetto spring fatto durante un periodo di formazione.
-Spring per il backend e jsp per il frontend
+La rivisitazione del progetto prova autonoleggio fatto cercando di seguire best practice per rendere il progetto più leggibile e manutenibile
+Per l'analisi ho usato dia
+per il backend spring
+per il frontend angular
