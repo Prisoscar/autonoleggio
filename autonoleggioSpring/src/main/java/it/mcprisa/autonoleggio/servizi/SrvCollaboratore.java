@@ -10,8 +10,10 @@ public interface SrvCollaboratore {
 
     public Collaboratore inserisci(Collaboratore collaboratore);
 
-    public void elimina(Collaboratore collaboratore, String id);
+    public void elimina(Collaboratore collaboratore);
 
     public Collaboratore modifica(Collaboratore collaboratore);
+
+    public List<Collaboratore> ricercaGenerica(String criterioRicerca);
     
 }

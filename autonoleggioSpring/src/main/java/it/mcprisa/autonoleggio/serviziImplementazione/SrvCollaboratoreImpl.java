@@ -38,19 +38,17 @@ public class SrvCollaboratoreImpl implements SrvCollaboratore {
     }
 
     @Override
-    public void elimina(Collaboratore collaboratore, String id) {
-        //come prima cosa si prova a eliminare il record usando il collaboratore
+    public void elimina(Collaboratore collaboratore) {
+        //in queste API non si fanno cancellazioni
+        throw new CattivaRichiestaException("Operazione non consentita!");
+        /*
+        //si prova ad eliminare il collaboratore dal DB
         try {
             repCollaboratore.delete(collaboratore);
         } catch (IllegalArgumentException e) {
-            //se non è presesente il collaboratore si prova ad eliminare per id
-            try {
-                repCollaboratore.deleteById(id);
-                //se anche il secondo tentativo va male si lancia una eccezione di CattivaRichiesta
-            } catch (IllegalArgumentException e2) {
-                throw new CattivaRichiestaException("Il collaboratore inviato non è presente nel database, controllare che i dati siano scritti correttamente.");
-            }
-        }
+            //se insorgono problemi viene lanciata una eccezione di cattiva richiesta
+            throw new CattivaRichiestaException("Il collaboratore inviato non è presente nel database, controllare che i dati siano scritti correttamente.");
+        }*/
     }
 
     @Override
@@ -61,7 +59,18 @@ public class SrvCollaboratoreImpl implements SrvCollaboratore {
             return repCollaboratore.save(collaboratore);
             //se il collaboratore non è presente nel database viene lanciata una eccezione di CattivaRichiesta
         } catch (RuntimeException e) {
-            throw new CattivaRichiestaException("Il collaboratore inviato non è presente nel database.");
+            throw new CattivaRichiestaException("Collaboratore non presente nel database.");
+        }
+    }
+
+    @Override
+    public List<Collaboratore> ricercaGenerica(String criterioRicerca) {
+        //se viene mandata una stringa vuota ritorno solo i risultati dove una delle voci è vuota
+        if (criterioRicerca.equals("")) {
+            return repCollaboratore.findByNomeOrPartitaIva(criterioRicerca);
+        //altrimenti si fa una ricerca tramite le wildcard % di mysql
+        } else {
+            return repCollaboratore.findByNomeLikeOrPartitaIvaLike("%" + criterioRicerca + "%");
         }
     }
 }
