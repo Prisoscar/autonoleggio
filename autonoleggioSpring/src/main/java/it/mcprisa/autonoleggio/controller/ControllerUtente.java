@@ -1,7 +1,6 @@
 package it.mcprisa.autonoleggio.controller;
 
 import it.mcprisa.autonoleggio.model.Utente;
-import it.mcprisa.autonoleggio.model.Utente;
 import it.mcprisa.autonoleggio.servizi.SrvUtente;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

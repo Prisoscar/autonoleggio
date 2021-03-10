@@ -33,6 +33,7 @@ public class JwtUtil {
                 .sign(HMAC512(SECRET.getBytes()));      //firmo con algoritmo HMAC512 e chiave di sicurezza
         return token;
     }
+    
     //Questo metodo valida il token e restituisce l'utente proprietario del token
     public static String getSubject (String token){
         String userName = JWT.require(HMAC512(SECRET.getBytes()))
@@ -40,5 +41,14 @@ public class JwtUtil {
                     .verify(token)
                     .getSubject();
         return userName;
+    }
+    
+    //this method checks token and returns the expiration time
+    public static Date getExpirationTime (String Token){
+        Date expirationTime = JWT.require(HMAC512(SECRET.getBytes()))
+                .build()
+                .verify(Token)
+                .getExpiresAt();
+        return expirationTime;
     }
 }

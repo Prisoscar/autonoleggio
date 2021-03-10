@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * dei messaggi di errore customizzati
  */
 @ControllerAdvice
-public class RimaneggiatoreEccezioniPersonalizzate {
+public class GestoreEccezioniPersonalizzate {
 
     //Questo è il metodo che gestisce le eccezioni personaliizte
     @ExceptionHandler(ModelloEccezionePersonalizzataConHttpStatus.class)
