@@ -44,4 +44,16 @@ public class SrvSicurezzaImpl implements SrvSicurezza {
         return token;
     }
 
+    @Override
+    //token will be overwritten with one with immediate expiration in order to delete the stored one (if there is one)
+    public void removeToken(HttpServletResponse response) {
+        // create a cookie containing the jwt
+        Cookie authorizationCookie = new Cookie(JwtUtil.HEADER_STRING, "");
+        authorizationCookie.setMaxAge(0);
+        authorizationCookie.setPath("/token");
+        authorizationCookie.setHttpOnly(true);      //for copy-paste reason set http only
+        //adds cookie to http response
+        response.addCookie(authorizationCookie);
+    }
+
 }

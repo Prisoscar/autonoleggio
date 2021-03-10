@@ -28,4 +28,9 @@ public class ControllerSicurezza {
     public String getToken(HttpServletRequest request){
         return srvSicurezza.getToken(request);
     }
+    
+    @RequestMapping (value = "/removeToken", method = RequestMethod.POST)
+    public void removeToken (HttpServletResponse response){
+        srvSicurezza.removeToken (response);
+    }
 }

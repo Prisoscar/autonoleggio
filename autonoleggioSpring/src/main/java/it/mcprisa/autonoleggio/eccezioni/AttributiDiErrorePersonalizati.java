@@ -16,7 +16,7 @@ public class AttributiDiErrorePersonalizati extends DefaultErrorAttributes {
 
     @Override
     public Map<String, Object> getErrorAttributes(WebRequest webRequest, ErrorAttributeOptions options) {
-        var attributes = super.getErrorAttributes(webRequest, options);        
+        var attributes = super.getErrorAttributes(webRequest, options);
         String httpStatusNome = attributes.get("error").toString();     //ottengo il nome dell'http status che si è generato dall'eccezione
         int httpStatusCodice = Integer.parseInt(attributes.get("status").toString());       //ottengo il codice dell'http status
         String messaggio = "Errore non mappato.";       //genero il messaggio di errore preimpostato
