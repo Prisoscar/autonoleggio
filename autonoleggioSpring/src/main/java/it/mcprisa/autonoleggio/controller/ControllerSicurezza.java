@@ -1,6 +1,5 @@
 package it.mcprisa.autonoleggio.controller;
 
-import it.mcprisa.autonoleggio.eccezioni.ErroreInternoAlServerException;
 import it.mcprisa.autonoleggio.servizi.SrvSicurezza;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
