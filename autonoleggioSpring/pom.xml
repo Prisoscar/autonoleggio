@@ -12,7 +12,6 @@
     <artifactId>autonoleggio</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>autonoleggio</name>
-    <description>Una cosa tanto per avere qualcosa di mio sul profilo github</description>
 
     <properties>
         <java.version>11</java.version>
